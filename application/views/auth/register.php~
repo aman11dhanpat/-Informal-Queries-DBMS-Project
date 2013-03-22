@@ -34,18 +34,17 @@
           </div>
           <div class="login-form">
             <form id="login_form" method="post" target="">
-		    <div class="control-group">
-		      <input name="username" type="text" class="login-field" value="" placeholder="Enter your email ID" id="login-name" />
-		      <label class="login-field-icon fui-man-16" for="login-name"></label>
-		    </div>
 
 		    <div class="control-group">
-		      <input name="password" type="password" class="login-field" value="" placeholder="Password" id="login-pass" />
-		      <label class="login-field-icon fui-lock-16" for="login-pass"></label>
+		      <input name="full_name" type="text" class="login-field" value="" placeholder="Full Name" id="reg-name" />
+		      <label class="login-field-icon fui-lock-16" for="reg-name"></label>
+		    </div>
+		    <div class="control-group">
+		      <input name="username" type="text" class="login-field" value="" placeholder="Enter your email" id="reg-username" />
+		      <label class="login-field-icon fui-man-16" for="reg-username"></label>
 		    </div>
             </form>
-            <a id="btn_login" class="btn btn-large btn-block" href="#">Login</a>
-           <a class="login-link" href="#">Lost your password?</a>
+            <a id="btn_login" class="btn btn-large btn-block" href="#">Register</a>
           </div>
         </div>
       </div>

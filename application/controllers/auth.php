@@ -38,6 +38,16 @@ class Auth extends CI_Controller {
 		$data ['title'] = "Informal Flights :: Login";
 		$this->load->view ( 'auth/login' , $data );
 	}
+	public function register ()
+	{
+		if ( isset ( $_POST['username'] ) )
+		{
+			echo $_POST['username'];
+			return;
+		}
+		$data ['title'] = "Informal Flights :: Register";
+		$this->load->view ( 'auth/register' , $data );
+	}
 }
 
 /* End of file welcome.php */
