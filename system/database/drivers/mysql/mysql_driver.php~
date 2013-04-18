@@ -65,16 +65,12 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function db_connect()
 	{
-		/*if ($this->port != '')
+		if ($this->port != '')
 		{
 			$this->hostname .= ':'.$this->port;
 		}
 
-		return @mysql_connect($this->hostname, $this->username, $this->password, TRUE);*/
-		define("CLIENT_MULTI_RESULTS",131072);//Enable/disable multi-results
-    		define("CLIENT_MULTI_STATEMENTS",65536);//Enable/disable multi-statement support
-        
-    		return @mysql_connect($this->hostname, $this->username, $this->password, TRUE,CLIENT_MULTI_STATEMENTS);
+		return @mysql_connect($this->hostname, $this->username, $this->password, TRUE);
 	}
 
 	// --------------------------------------------------------------------

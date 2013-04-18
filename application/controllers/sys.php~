@@ -61,11 +61,6 @@ class Sys extends CI_Controller {
 	}
 	public function add_flight()
 	{
-		if ($this->session->userdata('logged_in') == 0)
-		{
-			echo "You are not admin.";
-			return;
-		}
 		$from[1] = $_POST['from'];
 		$to[1] = $_POST['to'];
 		$table_name = 'location';
@@ -129,7 +124,7 @@ class Sys extends CI_Controller {
 			echo "Unable to extract TO station. Please make sure you mention 'to' before the station.";
 			return;
 		}
-		if (preg_match ("/([0-9]+)\-([0-9]+)\-([0-9]+)/i" , $str , $date) == 0)
+		if (preg_match ("/([0-9]+)\/([0-9]+)\/([0-9]+)/i" , $str , $date) == 0)
 		{
 			echo "Unable to extract date. Please check the date should be in proper format.";
 			return;
@@ -164,7 +159,7 @@ class Sys extends CI_Controller {
 		}
 		if ($from == $to)
 		{
-			echo '<p><center><img src="http://i.qkme.me/3tybsw.jpg" /></center></p>';
+			echo '<p><center><img src="http://www.teen.com/wp-content/uploads/2012/07/one-direction-one-does-not-simply.jpg" /></center></p>';
 			echo '<h3>One does not simply keep Source = Destination. </h3>';
 			return;
 		}
@@ -199,35 +194,6 @@ class Sys extends CI_Controller {
 		}
 		echo $op;
 	}
-	public function random_numbers($digits) {
-	    $min = pow(10, $digits - 1);
-	    $max = pow(10, $digits) - 1;
-	    return mt_rand($min, $max);
-	}
-	public function book_flight()
-	{
-		$this->form_validation->set_rules('id', 'Flight Name', 'required');
-		$this->form_validation->set_rules('date', 'Date', 'required|exact_length[10]');
-		if ($this->form_validation->run() == FALSE)
-		{
-			echo validation_errors();
-			print_r ($_POST);
-		}
-		else
-		{
-			$id = set_value('id');
-			$day = set_value('date');
-			$email = $this->session->userdata('email');
-			$this->db->where('LOWER(username)=', strtolower($email));
-			$query = $this->db->get('users');
-			$uid = $query->first_row();
-			$uid = $uid->id;
-			$pnr = $this->random_numbers(3);
-			$this->db->query("UPDATE `bookings` SET booked=booked+1 WHERE id={$id} AND day='{$day}';");
-			$this->db->query("INSERT INTO `transactions` (`id`, `pnr`, `flight_id`, `user_id`, `day`) VALUES (NULL, '{$pnr}', '{$id}', '{$uid}', '{$day}');");
-			echo "Ticket booked successfully";
-		}
-	}
 	public function manual_search()
 	{
 
@@ -248,28 +214,13 @@ class Sys extends CI_Controller {
 			$to = $this->db->query("SELECT name FROM location WHERE id=" . set_value('To'));
 			$to = $to->first_row();
 			$to = $to->name;
-			$date = set_value('date');
-			//$originalDate = $date;
-			//$date = date("Y-m-d", strtotime($originalDate));
 			//echo $from . " " . $to;
 			$flights = $this->db->query("SELECT * FROM  `flights` WHERE  `from` = " . set_value('From') . " AND  `to` = " . set_value('To'));
 			$op = "";
 			//echo $flights->num_rows();
 			foreach ($flights->result() as $row)
 			{
-				$q = $this->db->query("SELECT booked FROM bookings WHERE id={$row->id} AND day='{$date}'" );
-				if ($q->num_rows() == 0)
-				{
-					
-					$q = $this->db->query("INSERT INTO `dbms`.`bookings` (`id`, `day`, `booked`) VALUES ('{$row->id}', '{$date}', '0');" );
-					$q = $this->db->query("SELECT booked FROM bookings WHERE id={$row->id} AND day='{$date}'" );
-				}
-				$q = $q->first_row();
-				$q = $q->booked;
-				$q = $row->total_seats - $q;
-				if ($q == 0)
-					continue;
-				$op .= "<li class=\"fl\" uid=\"{$row->id}\" fname=\"{$row->name}\" cost=\"{$row->fair}\" aval=\"{$q}\" day=\"{$date}\">
+				$op .= "<li class=\"fl\">
 					  <div class=\"todo-content\">
 					    <h4 class=\"todo-name\">
 					      Flight name <strong>{$row->name}</strong> Departs at <strong>{$row->departure}</strong> Arrives at <strong>{$row->arrival}</strong>

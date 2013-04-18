@@ -1,0 +1,22 @@
+<?php
+
+	function is_logged_in()
+	{
+	
+		return false;
+	}
+
+	function login( $username , $password )
+	{
+	
+	}
+	function is_username_available($username)
+	{
+		$this->db->select('1', FALSE);
+		$this->db->where('LOWER(username)=', strtolower($username));
+
+		$query = $this->db->get("users");
+		return $query->num_rows() == 0;
+	}
+
+?>

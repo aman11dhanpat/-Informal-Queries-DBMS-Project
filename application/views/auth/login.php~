@@ -35,7 +35,7 @@
           <div class="login-form">
             <form id="login_form" method="post" target="">
 		    <div class="control-group">
-		      <input name="username" type="text" class="login-field" value="" placeholder="Enter your name" id="login-name" />
+		      <input name="username" type="text" class="login-field" value="" placeholder="Enter your email ID" id="login-name" />
 		      <label class="login-field-icon fui-man-16" for="login-name"></label>
 		    </div>
 
@@ -45,10 +45,11 @@
 		    </div>
             </form>
             <a id="btn_login" class="btn btn-large btn-block" href="#">Login</a>
-           <a class="login-link" href="#">Lost your password?</a>
+           <a class="login-link" href="#">Lost your password?</a><a class="login-link" href="register">New User</a>
           </div>
         </div>
       </div>
     </div>
+	<?php //print_r ($error); ?>
   </body>
 </html>

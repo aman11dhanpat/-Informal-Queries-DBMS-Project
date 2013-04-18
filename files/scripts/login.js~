@@ -2,16 +2,28 @@ $(document).ready(function(){
 	$('#btn_login').click ( function (){
 		$.post('', $('#login_form').serialize())
 		.done(function(data) {
-			//alert("Data Loaded: " + data);
-			bootbox.alert("Hello world!");
 			if ( data == "success" )
 			{
+				window.location.replace("redirect/sys");
 			}
 			else
 			{
-				//$('#err_login').fadeIn(500);
-				//$('#err_login').alert();
+				bootbox.alert(data);
 			}
+		});
+	});
+	$(document).keypress(function(e) {
+	    if(e.which == 13) {
+		alert('You pressed enter!');
+	    }
+	});
+	$('#login_forgot').click (function(){
+		bootbox.prompt("Please enter your username", function(result) {                
+		  if (result === null) {                                             
+		    Example.show("Prompt dismissed");                              
+		  } else {
+		    Example.show("Hi <b>"+result+"</b>");                          
+		  }
 		});
 	});
 });

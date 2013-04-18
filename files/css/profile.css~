@@ -1,0 +1,40 @@
+body{
+	background-color:#cdcdcd;
+}
+
+#dash_header{
+	width:100%;
+	height: 60px;
+	display:block;
+	top:0px;
+	background-color:#2C3E50;
+}
+#dash_header_inner{
+	width:auto;
+	margin-left:auto;
+	margin-right:auto;
+	padding : 5px 5px 5px 5px;
+}
+
+.nav{
+	width:100%;
+}
+
+#dash_main{
+	width:940px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+footer{
+	bottom:0px;
+	height:50px;
+	width:100%;
+	background-color:#2C3E50;
+	position:absolute;
+	display:block;
+}
+.input-append .add-on{
+	width:30px;
+	height:30px;
+}

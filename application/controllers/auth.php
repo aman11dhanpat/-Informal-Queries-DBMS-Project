@@ -2,51 +2,115 @@
 
 class Auth extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
 		$this->load->database();
+		$this->load->library('form_validation');
 
+	}
+	public function redirect($data)
+	{
+		$this->output->set_header('refresh:3;url='.base_url()."index.php/".$data); 
+		$url['url'] = base_url()."index.php/".$data;
+		$url['message'] = "You have been logged in successfully.";
+		$this->load->view("redirect" , $url);
 	}
 	public function index()
 	{
 		$this->load->view('welcome_message');
 	}
-	public function login ()
+	public function logout()
 	{
-		if ( isset ( $_POST['username'] ) )
+		$this->load->model('user_man');
+		$this->user_man->logout();
+		$this->output->set_header('refresh:10;url='.base_url().'index.php/auth/login'); 
+		$url['url'] = base_url().'index.php/auth/login';
+		$url['message'] = "You have logged out successfully<br >Please login to start a new session.";
+		$this->load->view("redirect" , $url);
+	}
+	public function login()
+	{
+		$this->form_validation->set_rules('username', 'Username', 'required|valid_email|trim');
+		$this->form_validation->set_rules('password', 'Password', 'required');
+		if ($this->form_validation->run() == FALSE)
 		{
-			echo $_POST['username'];
-			return;
+			if (validation_errors())
+			{
+				echo validation_errors();
+				return;
+			}
+			else
+			{
+				$data ['title'] = "Informal Flights :: Login";
+				$this->load->view ( 'auth/login' , $data );
+			}
 		}
-		$data ['title'] = "Informal Flights :: Login";
-		$this->load->view ( 'auth/login' , $data );
+		else
+		{
+			$this->load->model('user_man');
+			$user = set_value('username');
+			$pass = set_value('password');
+			if ( $this->user_man->login ($user , $pass) == true )
+				echo "success";
+			else
+				echo "<p>Invalid Login.</p>";
+		}
+
 	}
 	public function register ()
 	{
-		if ( isset ( $_POST['username'] ) )
+		$this->form_validation->set_rules('username', 'Username', 'required|valid_email|trim');
+		$this->form_validation->set_rules('full_name', 'Full Name', 'trim|required');
+		if ($this->form_validation->run() == FALSE)
 		{
-			echo $_POST['username'];
-			return;
+			if (validation_errors())
+			{
+				echo validation_errors();
+				return;
+			}
+			else
+			{
+				$data ['title'] = "Informal Flights :: Register";
+				$this->load->view ( 'auth/register' , $data );
+				//$this->load->view('myform');
+			}
 		}
-		$data ['title'] = "Informal Flights :: Register";
-		$this->load->view ( 'auth/register' , $data );
+		else
+		{
+			$this->load->model('user_man');
+			$user = set_value('username');
+			$name = set_value ('full_name');
+			//$pass = set_value('password');
+			if ($this->user_man->is_username_available($user) == false)
+			{
+				echo "<p>Username is unavailable.</p>";
+				return;
+			}
+			else
+			{
+				if ( ($pass = $this->user_man->register( $user , $name )) != "" )
+				{
+					echo "<p>You have been successfully registered.
+					<br />Please check your email for further assistance.
+					<br />You may now close the tab/window.</p>";
+					$data ['pass'] = $pass;
+					$data ['user'] = $user;
+					$data ['name'] = $name;
+					$data ['site_name'] = "Informal Flights";
+					$message = $this->load->view('auth/welcome_email', $data, TRUE);
+					$this->user_man->email_user ($user , $message);
+					return;
+				}
+				else
+				{
+					echo "<p>There was some problem in registering you account.
+					<br />Please check try again after sometime.</p>";
+					return;
+				}
+			}
+		}
 	}
 }
 

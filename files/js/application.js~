@@ -9,32 +9,13 @@ $(document).on( 'click' , ".todo li" , function() {
 	$(this).toggleClass("todo-done");
 });
 
-$(document).on( 'click' , ".fl" , function() {
-	var day = $(this).attr('day');
-	var id = $(this).attr('uid')
-	bootbox.confirm("Are you sure you want to book ticket in flight : " + $(this).attr('fname') + "<br />Total Availablity on " + $(this).attr('day') + " is : " + $(this).attr('aval') + "<br />Total cost is : " + $(this).attr('cost') , function (result){
-		if (result == true)
-		{
-			$.post('book_flight' , 'id=' + id + '&date=' + day , function (data){
-				bootbox.alert (data);
-			});
-		}
-	});
-	$(this).toggleClass("todo-done");
-});
-
 $(document).ready(function() {
     // Todo list
-    $(".todo li").click(function() {
+    $(".todo>.fl").click(function() {
         $(this).toggleClass("todo-done");
     });
-    
-    /*$(".fl").bind('click' , function() {
-        bootbox.alert($(this).attr());
-    });*/
 
     // Init tooltips
-    //From mumbai to surat on 11/11/1111
     $("[data-toggle=tooltip]").tooltip("show");
 
     // Init tags input

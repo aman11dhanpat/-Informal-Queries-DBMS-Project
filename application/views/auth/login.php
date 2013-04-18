@@ -45,10 +45,11 @@
 		    </div>
             </form>
             <a id="btn_login" class="btn btn-large btn-block" href="#">Login</a>
-           <a class="login-link" href="#">Lost your password?</a>
+           <a class="login-link" href="#">Lost your password?</a><a class="login-link" href="register">New User?</a>
           </div>
         </div>
       </div>
     </div>
+	<?php //print_r ($error); ?>
   </body>
 </html>
